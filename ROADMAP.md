@@ -4,7 +4,7 @@ Cipher Trace will be delivered as an encrypted document provenance and approval 
 
 Published architecture and diagrams:
 
-<https://connorhunter.me/projects?project=cipher-trace#cipher-trace>
+<https://connorhunter.me/projects/cipher-trace?viewer=docs#project-viewer>
 
 Live issue hierarchy:
 
