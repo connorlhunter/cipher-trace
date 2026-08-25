@@ -58,3 +58,12 @@ def test_boundary_finds_nested_plaintext_fields() -> None:
 
     with pytest.raises(ValueError, match="document-key"):
         assert_no_plaintext_fields(payload)
+
+
+def test_boundary_handles_list_values_and_non_string_mapping_keys() -> None:
+    payload = {
+        "revisions": [{"file-name": "not allowed"}],
+        "ignored": {1: {"title": "not traversed through a non-string key"}},
+    }
+
+    assert find_prohibited_field_paths(payload) == ("revisions[0].file-name",)

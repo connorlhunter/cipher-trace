@@ -8,12 +8,15 @@ Project documentation, diagrams, and the published architecture:
 
 ## Scope
 
-Cipher Trace is designed to establish that an immutable ciphertext revision was created, linked to prior history, and approved by authorized signers under a versioned policy. It does not claim that the service can read, understand, compare, or recover document plaintext.
+Cipher Trace proves that a ciphertext revision was recorded in order and approved by allowed signers. It cannot read, understand, or judge the document.
+
+DynamoDB is the live trace and workflow source of truth. A checkpoint worker periodically batches accepted event hashes into a Merkle root and anchors that root on a public blockchain. The checkpoint adds an external timestamp and tamper check. It never puts documents, ciphertext, names, keys, policies, or individual approvals on chain.
 
 - Browser clients own document encryption, decryption, private metadata, and device private keys.
 - FastAPI on API Gateway and AWS Lambda owns authenticated control-plane validation, policy checks, signed-trace verification, idempotency, and presigned S3 intents.
 - Python Lambda workers confirm ciphertext object facts and build derived workflow projections.
 - S3 stores ciphertext only. DynamoDB stores opaque records, public keys, encrypted key envelopes, immutable trace events, and derived status.
+- A public blockchain stores periodic Merkle roots only. It does not run approvals, store documents, or require wallet login.
 
 ## Repository layout
 
@@ -50,6 +53,20 @@ uv run uvicorn app.main:app --app-dir apps/api --reload
 The production Lambda entrypoint is apps/api/app/lambda_handler.py. The application must remain a JSON-only control plane: document bytes, plaintext metadata, and document keys do not belong in API Gateway, Lambda request bodies, logs, or error reports.
 
 The Python and TypeScript libraries share a strict, structural trace-event envelope. They reject known plaintext and document-key field names, but deliberately do not implement encryption, signatures, canonical serialization, or ciphertext processing. Those protocol decisions remain gated by the roadmap and published architecture.
+
+## Coverage
+
+Both TypeScript and Python require at least 95% line and function coverage. Generate the matching overview, TypeScript, and Python reports with:
+
+```sh
+bun run coverage:build
+```
+
+The publication command renders the same report pages and PDFs, then uploads them when the artifact bucket environment variables are available:
+
+```sh
+bun run coverage:publish
+```
 
 ## Roadmap
 
