@@ -15,6 +15,12 @@
   ],
   "scripts": {
     "bootstrap": "bun scripts/bootstrap.ts",
+    "coverage:build": "bun run coverage:typescript && bun run coverage:python && bun run coverage:render && bun run coverage:render:pdf",
+    "coverage:publish": "bun run coverage:typescript && bun run coverage:python && bun scripts/publish/publish-coverage.ts",
+    "coverage:python": "uv run pytest --cov=apps/api/app --cov=cipher_trace_core --cov-report=term-missing --cov-fail-under=95 && uv run python -m coverage lcov -o coverage/python.lcov && bun scripts/coverage/check-python-coverage.ts",
+    "coverage:render": "bun scripts/coverage/render-coverage-report.ts",
+    "coverage:render:pdf": "bun scripts/coverage/render-coverage-pdf.ts",
+    "coverage:typescript": "bun test packages/typescript --coverage --coverage-reporter=text --coverage-reporter=lcov --coverage-dir=coverage --timeout 30000 && bun scripts/coverage/check-typescript-coverage.ts",
     "format": "bun x prettier --write . --ignore-unknown",
     "format:check": "bun x prettier --check . --ignore-unknown",
     "hooks:setup": "bun scripts/setup-git-hooks.ts",
@@ -24,8 +30,8 @@
     "test:ts": "bun test scripts packages/typescript",
     "toolchain:check": "bun scripts/check-toolchain.ts",
     "typecheck:ts": "bun x tsc --build --pretty false",
-    "verify": "bun run verify:ts && uv run ruff check . && uv run mypy && uv run pytest",
-    "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run test:ts"
+    "verify": "bun run verify:ts && uv run ruff check . && uv run mypy && bun run coverage:python",
+    "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run coverage:typescript"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -33,6 +39,7 @@
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.6",
+    "puppeteer": "^25.3.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0"
   }

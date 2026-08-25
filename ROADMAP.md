@@ -22,7 +22,7 @@ Live issue hierarchy:
 
 Establish the vocabulary and limits before runtime code. Define the protected assets, attacker capabilities, visible server metadata, and the exact distinction between a verified ciphertext-history claim and a plaintext-understanding claim.
 
-Exit gate: reviewed threat model, privacy/claim matrix, capability scope, and architecture decisions explicitly reject server-side plaintext access, document-key escrow, and blockchain dependency.
+Exit gate: reviewed threat model, privacy/claim matrix, capability scope, and architecture decisions explicitly reject server-side plaintext access, document-key escrow, and on-chain document or workflow data.
 
 ## Phase 1: Repository foundation and versioned contracts
 
@@ -60,11 +60,11 @@ Deliver the client-only decrypted document review experience, review requests, a
 
 Exit gate: usability and protocol tests show a reviewer sees the exact locally decrypted revision and signed target before approval; policy tests prove revision binding and distinct-account rules.
 
-## Phase 7: Production AWS boundaries and private operations
+## Phase 7: Production AWS boundaries, public checkpoints, and private operations
 
-Provision the API Gateway/FastAPI Lambda, worker Lambdas, Cognito, private S3, DynamoDB, IAM roles, KMS defense-in-depth, deployment pipeline, structured redaction, metrics, alerts, backups, and recovery runbooks. Operational tooling must preserve the no-plaintext contract.
+Provision the API Gateway/FastAPI Lambda, worker Lambdas, Cognito, private S3, DynamoDB, IAM roles, KMS defense-in-depth, a periodic checkpoint worker, deployment pipeline, structured redaction, metrics, alerts, backups, and recovery runbooks. The checkpoint worker batches accepted event hashes into a Merkle root and anchors only that root and checkpoint reference on a public blockchain. Operational tooling must preserve the no-plaintext contract.
 
-Exit gate: synthesized infrastructure and live integration checks prove least privilege, private object access, redacted logs, idempotent worker behavior, and a repeatable rollback/recovery procedure.
+Exit gate: synthesized infrastructure and live integration checks prove least privilege, private object access, redacted logs, idempotent worker behavior, verified public checkpoints with no document or workflow data on chain, and a repeatable rollback/recovery procedure.
 
 ## Phase 8: Assurance and private-alpha readiness
 
@@ -77,7 +77,8 @@ Exit gate: signed release candidate, documented limitations, evidence bundle, pr
 - Server-side document decryption, indexing, OCR, previews, malware scanning, or content moderation of plaintext
 - Document-key escrow, silent password-reset recovery, or server-created replacement keys
 - Plaintext search, deterministic plaintext hashes, cross-tenant document deduplication, or semantic document comparison
-- Blockchain, wallet authentication, testnet anchoring, or a claim that a trace proves an approver understood a document
+- Wallet authentication, customer crypto assets, a chain that stores documents or workflow events, or a claim that a trace proves an approver understood a document
+- Public-chain provider choice, confirmation threshold, checkpoint cadence, and checkpoint-cost controls
 - Multi-region recovery until document-key recovery and cryptographic migration policy are explicitly designed
 
 The [GitHub Project](https://github.com/users/connorlhunter/projects/16) is the live roadmap. Its parent issues and native subissues are linked directly to the main Cipher Trace repository.

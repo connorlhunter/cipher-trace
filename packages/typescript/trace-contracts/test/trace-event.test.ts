@@ -1,6 +1,7 @@
 import { expect, test } from "bun:test";
 
 import {
+  assertNoPlaintextFields,
   findProhibitedFieldPaths,
   parseTraceEvent,
   type TraceEvent,
@@ -46,4 +47,20 @@ test("finds prohibited nested field names", (): void => {
       },
     }),
   ).toEqual(["encrypted_metadata_envelope.nested.document-key"]);
+});
+
+test("rejects forbidden fields within arrays", (): void => {
+  const payload = {
+    revisions: [
+      { encrypted_metadata_envelope: "opaque" },
+      { " File-Name ": "not allowed" },
+    ],
+  };
+
+  expect(findProhibitedFieldPaths(payload)).toEqual([
+    "revisions[1]. File-Name ",
+  ]);
+  expect((): void => assertNoPlaintextFields(payload)).toThrow(
+    "revisions[1]. File-Name ",
+  );
 });

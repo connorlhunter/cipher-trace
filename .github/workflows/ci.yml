@@ -42,7 +42,7 @@ jobs:
       - run: bun run format:check
       - run: bun run lint:ts
       - run: bun run typecheck:ts
-      - run: bun run test:ts
+      - run: bun run coverage:typescript
       - run: uv run ruff check .
       - run: uv run mypy
-      - run: uv run pytest
+      - run: bun run coverage:python
