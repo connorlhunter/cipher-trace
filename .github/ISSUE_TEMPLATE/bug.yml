@@ -1,0 +1,38 @@
+name: Bug
+description: Report a reproducible Cipher Trace problem.
+title: "fix: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, document plaintext, document keys, key envelopes, real encrypted customer artifacts, or security vulnerabilities.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can it be reproduced?
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - Browser client
+        - FastAPI control plane
+        - Ciphertext confirmer worker
+        - Trace projector worker
+        - Infrastructure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+    validations:
+      required: true
