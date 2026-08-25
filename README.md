@@ -17,34 +17,39 @@ Cipher Trace is designed to establish that an immutable ciphertext revision was 
 
 ## Repository layout
 
-~~~text
+```text
 apps/
   api/                         FastAPI control-plane Lambda
   web/                         client-only encrypted document experience
   workers/                     ciphertext confirmer and trace projector boundaries
 infra/                         AWS deployment and least-privilege IaC boundary
-packages/trace_contracts/      versioned trace and ciphertext contract guidance
-~~~
+packages/python/               installable Python control-plane contracts
+packages/typescript/           strict TypeScript trace-event contracts
+scripts/                       developer workflow, naming, and issue-link checks
+```
 
 This repository starts as a security-conscious scaffold. It deliberately does not yet accept uploads, decrypt documents, create keys, or claim a production-ready cryptographic implementation.
 
 ## Development
 
-Install Python 3.12+ and uv, then run:
+Install Bun 1.3.14, Python 3.12+, and uv, then run:
 
-~~~sh
-uv sync --all-groups
-uv run ruff check .
-uv run pytest
-~~~
+```sh
+bun run bootstrap
+bun run verify
+```
+
+The bootstrap command installs Bun dependencies, syncs the Python workspace, and configures the repository hooks. The complete quality check validates naming, linked contracts, formatting, TypeScript, Python, and tests. It requires no cloud credentials.
 
 The FastAPI skeleton exposes only a health endpoint:
 
-~~~sh
+```sh
 uv run uvicorn app.main:app --app-dir apps/api --reload
-~~~
+```
 
 The production Lambda entrypoint is apps/api/app/lambda_handler.py. The application must remain a JSON-only control plane: document bytes, plaintext metadata, and document keys do not belong in API Gateway, Lambda request bodies, logs, or error reports.
+
+The Python and TypeScript libraries share a strict, structural trace-event envelope. They reject known plaintext and document-key field names, but deliberately do not implement encryption, signatures, canonical serialization, or ciphertext processing. Those protocol decisions remain gated by the roadmap and published architecture.
 
 ## Roadmap
 
@@ -54,15 +59,15 @@ The ordered delivery plan is in [ROADMAP.md](ROADMAP.md). The matching [GitHub P
 
 Run the local checks before opening a pull request. Branch names use:
 
-~~~text
+```text
 <type>/<kebab-case-name>
-~~~
+```
 
 Commit, issue, and pull-request titles use:
 
-~~~text
+```text
 <type>[(scope)][!]: <imperative summary>
-~~~
+```
 
 Allowed types are feat, fix, chore, docs, test, and refactor. Open an architecture decision issue before changing an encryption boundary, privacy claim, trace semantics, data model, deployment shape, or supported platform.
 

@@ -8,6 +8,7 @@ license = { text = "MIT" }
 authors = [{ name = "Connor Hunter" }]
 dependencies = [
   "boto3>=1.35,<2",
+  "cipher-trace-core",
   "fastapi>=0.115,<1",
   "mangum>=0.19,<1",
   "pydantic-settings>=2.6,<3",
@@ -26,10 +27,16 @@ dev = [
 [tool.uv]
 package = false
 
+[tool.uv.sources]
+cipher-trace-core = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/python/*"]
+
 [tool.pytest.ini_options]
 addopts = "--strict-markers"
 pythonpath = ["apps/api"]
-testpaths = ["apps/api/tests"]
+testpaths = ["apps/api/tests", "packages/python/cipher-trace-core/tests"]
 
 [tool.ruff]
 target-version = "py312"
@@ -41,6 +48,7 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.mypy]
 python_version = "3.12"
-files = ["apps/api"]
+files = ["apps/api", "packages/python/cipher-trace-core/src"]
+mypy_path = ["apps/api", "packages/python/cipher-trace-core/src"]
 strict = true
 warn_unused_configs = true

@@ -6,7 +6,6 @@ Closes #<issue-number>
 
 ## Checks
 
-- [ ] uv run ruff check .
-- [ ] uv run pytest
+- [ ] bun run verify
 - [ ] No credentials, plaintext document data, document keys, key envelopes, or generated build output are included
 - [ ] Security, privacy, cryptographic, data, and deployment effects are described above
