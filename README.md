@@ -32,7 +32,7 @@ This repository starts as a security-conscious scaffold. It deliberately does no
 
 ## Development
 
-Install Bun 1.3.14, Python 3.12+, and uv, then run:
+Install Bun 1.3.14, Python 3.12, and uv 0.12.6, then run:
 
 ```sh
 bun run bootstrap

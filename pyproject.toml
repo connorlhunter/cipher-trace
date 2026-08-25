@@ -26,6 +26,7 @@ dev = [
 
 [tool.uv]
 package = false
+required-version = "==0.12.6"
 
 [tool.uv.sources]
 cipher-trace-core = { workspace = true }
