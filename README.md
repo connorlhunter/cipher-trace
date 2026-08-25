@@ -4,7 +4,7 @@ Cipher Trace is an end-to-end encrypted document provenance and approval platfor
 
 Project documentation, diagrams, and the published architecture:
 
-<https://connorhunter.me/projects?project=cipher-trace#cipher-trace>
+<https://connorhunter.me/projects/cipher-trace?viewer=docs#project-viewer>
 
 ## Scope
 
