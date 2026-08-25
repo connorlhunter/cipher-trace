@@ -4,7 +4,7 @@ Create a branch from main, keep the change focused, and open a pull request.
 
 Every pull request except one opened by Dependabot must link a Cipher Trace issue with a recognized phrase such as Closes #<issue-number> or Related to #<issue-number>.
 
-Run uv sync --all-groups once after cloning. Run uv run ruff check . and uv run pytest before opening or updating a pull request. CI runs the same checks and scans Python and GitHub Actions with CodeQL.
+Run uv sync --all-groups once after cloning. Run uv run ruff check . and uv run pytest before opening or updating a pull request. The initial CI runs the same checks; the Phase 1 roadmap establishes the full dependency and CodeQL policy.
 
 Branches use <type>/<kebab-case-name>. Commit, issue, and pull-request subjects use <type>[(scope)][!]: <imperative summary>, where <type> is feat, fix, chore, docs, test, or refactor. Issue forms supply the appropriate prefix.
 

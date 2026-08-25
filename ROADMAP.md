@@ -6,6 +6,10 @@ Published architecture and diagrams:
 
 <https://connorhunter.me/projects?project=cipher-trace#cipher-trace>
 
+Live issue hierarchy:
+
+<https://github.com/connorlhunter/cipher-trace/issues>
+
 ## Operating rules
 
 - The GitHub Project is the ordered implementation record. Each phase has a parent issue and focused child issues.
@@ -76,4 +80,4 @@ Exit gate: signed release candidate, documented limitations, evidence bundle, pr
 - Blockchain, wallet authentication, testnet anchoring, or a claim that a trace proves an approver understood a document
 - Multi-region recovery until document-key recovery and cryptographic migration policy are explicitly designed
 
-The detailed phase issue source lives in [docs/roadmap](docs/roadmap/).
+The [GitHub Project](https://github.com/users/connorlhunter/projects/16) is the live roadmap. Its parent issues and native subissues are linked directly to the main Cipher Trace repository.

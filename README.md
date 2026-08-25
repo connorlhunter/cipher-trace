@@ -22,9 +22,6 @@ apps/
   api/                         FastAPI control-plane Lambda
   web/                         client-only encrypted document experience
   workers/                     ciphertext confirmer and trace projector boundaries
-docs/
-  adr/                         architecture decision records
-  roadmap/                     phase source for the GitHub Project roadmap
 infra/                         AWS deployment and least-privilege IaC boundary
 packages/trace_contracts/      versioned trace and ciphertext contract guidance
 ~~~
@@ -51,7 +48,7 @@ The production Lambda entrypoint is apps/api/app/lambda_handler.py. The applicat
 
 ## Roadmap
 
-The ordered delivery plan is in [ROADMAP.md](ROADMAP.md). The matching GitHub Project keeps phase and implementation issues visible. Every phase has an explicit security/verification exit gate.
+The ordered delivery plan is in [ROADMAP.md](ROADMAP.md). The matching [GitHub Project](https://github.com/users/connorlhunter/projects/16) keeps phase and implementation issues visible. The published design reference is the Cipher Trace page linked above. Every phase has an explicit security/verification exit gate.
 
 ## Contribution rules
 
