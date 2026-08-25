@@ -115,9 +115,9 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "httpx", specifier = ">=0.27,<1" },
-    { name = "mypy", specifier = ">=1.13,<2" },
-    { name = "pytest", specifier = ">=8.3,<9" },
-    { name = "pytest-cov", specifier = ">=6,<7" },
+    { name = "mypy", specifier = ">=1.13,<3" },
+    { name = "pytest", specifier = ">=8.3,<10" },
+    { name = "pytest-cov", specifier = ">=6,<8" },
     { name = "ruff", specifier = ">=0.8,<1" },
 ]
 
