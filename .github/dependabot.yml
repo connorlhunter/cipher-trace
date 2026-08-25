@@ -26,3 +26,17 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: America/New_York
+    open-pull-requests-limit: 5
+    rebase-strategy: auto
+    groups:
+      production:
+        dependency-type: production
+      development:
+        dependency-type: development

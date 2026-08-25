@@ -1,0 +1,39 @@
+{
+  "name": "cipher-trace",
+  "version": "0.1.0-alpha.0",
+  "description": "End-to-end encrypted document provenance and approval platform",
+  "license": "MIT",
+  "private": true,
+  "repository": "https://github.com/connorlhunter/cipher-trace",
+  "type": "module",
+  "packageManager": "bun@1.3.14",
+  "engines": {
+    "bun": "1.3.14"
+  },
+  "workspaces": [
+    "packages/typescript/*"
+  ],
+  "scripts": {
+    "bootstrap": "bun scripts/bootstrap.ts",
+    "format": "bun x prettier --write . --ignore-unknown",
+    "format:check": "bun x prettier --check . --ignore-unknown",
+    "hooks:setup": "bun scripts/setup-git-hooks.ts",
+    "lint:ts": "bun x eslint .",
+    "naming:check": "bun scripts/change-naming.ts --branch",
+    "prepare": "bun scripts/setup-git-hooks.ts",
+    "test:ts": "bun test scripts packages/typescript",
+    "toolchain:check": "bun scripts/check-toolchain.ts",
+    "typecheck:ts": "bun x tsc --build --pretty false",
+    "verify": "bun run verify:ts && uv run ruff check . && uv run mypy && uv run pytest",
+    "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run test:ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "^1.3.14",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0"
+  }
+}

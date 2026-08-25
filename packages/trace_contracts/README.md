@@ -1,6 +1,13 @@
 # Trace contracts
 
-This package will hold versioned, cross-client contract fixtures for:
+The executable contract scaffolds currently live in:
+
+- packages/python/cipher-trace-core
+- packages/typescript/trace-contracts
+
+They hold strict field-shape validation only. The published Cipher Trace architecture remains the source for approved protocol semantics.
+
+Future versioned, cross-client fixtures will cover:
 
 - encrypted revision-envelope format
 - recipient device key-envelope format
