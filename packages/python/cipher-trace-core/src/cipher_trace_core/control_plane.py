@@ -13,6 +13,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from cipher_trace_core.identifiers import OpaqueIdentifier
 
+# These names could carry plaintext or document keys. The boundary rejects
+# them before a payload is accepted as control-plane data.
 FORBIDDEN_CONTROL_PLANE_FIELDS = frozenset(
     {
         "comment",
@@ -33,7 +35,7 @@ FORBIDDEN_CONTROL_PLANE_FIELDS = frozenset(
 
 
 class TraceEventType(StrEnum):
-    """Workflow events that can be structurally represented before protocol implementation."""
+    """Workflow events the control plane may record for a document revision."""
 
     REVISION_CREATED = "revision.created"
     REVISION_SUBMITTED = "revision.submitted"
@@ -44,7 +46,11 @@ class TraceEventType(StrEnum):
 
 
 class TraceEvent(BaseModel):
-    """A strict event envelope with opaque server-visible values only."""
+    """A strict event envelope made only of server-visible opaque values.
+
+    The envelope links a revision, signer, policy, digest, and signature. It
+    does not carry document content, document keys, or readable metadata.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -63,13 +69,27 @@ class TraceEvent(BaseModel):
 
 
 def find_prohibited_field_paths(payload: Mapping[str, object]) -> tuple[str, ...]:
-    """Return paths whose names disclose plaintext or document-key semantics."""
+    """List payload paths whose names suggest plaintext or document-key data.
+
+    Args:
+        payload: The nested control-plane payload to inspect.
+
+    Returns:
+        Paths to prohibited field names, in traversal order.
+    """
 
     return tuple(_find_prohibited_field_paths(payload))
 
 
 def assert_no_plaintext_fields(payload: Mapping[str, object]) -> None:
-    """Reject payloads containing prohibited plaintext or document-key field names."""
+    """Reject a payload that contains plaintext or document-key field names.
+
+    Args:
+        payload: The nested control-plane payload to inspect.
+
+    Raises:
+        ValueError: If a prohibited field name is present.
+    """
 
     prohibited_paths = find_prohibited_field_paths(payload)
     if prohibited_paths:

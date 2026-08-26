@@ -3,6 +3,7 @@ import { z } from "zod";
 import { assertNoPlaintextFields } from "./control-plane.ts";
 import { opaqueIdentifierSchema } from "./identifiers.ts";
 
+/** Enumerates the workflow changes that can appear in a trace event. */
 export const traceEventTypeSchema = z.enum([
   "revision.created",
   "revision.submitted",
@@ -12,6 +13,12 @@ export const traceEventTypeSchema = z.enum([
   "workflow.cancelled",
 ]);
 
+/**
+ * Validates the server-visible envelope for one immutable trace event.
+ *
+ * The schema contains identifiers, digests, signatures, and optional encrypted
+ * metadata only. It does not accept document content or document keys.
+ */
 export const traceEventSchema = z
   .object({
     schema_version: z.literal("1"),
@@ -34,9 +41,18 @@ export const traceEventSchema = z
   })
   .strict();
 
+/** A validated immutable trace event. */
 export type TraceEvent = z.infer<typeof traceEventSchema>;
+/** A valid trace event name. */
 export type TraceEventType = z.infer<typeof traceEventTypeSchema>;
 
+/**
+ * Validate a trace event and reject plaintext-style field names.
+ *
+ * @param payload Untrusted value received at a contract boundary.
+ * @returns The validated immutable trace event.
+ * @throws {Error} When field names or event values do not match the contract.
+ */
 export function parseTraceEvent(payload: unknown): TraceEvent {
   assertNoPlaintextFields(payload);
   return traceEventSchema.parse(payload);

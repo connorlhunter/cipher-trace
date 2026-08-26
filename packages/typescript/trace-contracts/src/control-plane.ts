@@ -1,3 +1,8 @@
+/**
+ * Field names that would expose document plaintext or key material.
+ *
+ * The control plane rejects these names at every nesting level.
+ */
 export const forbiddenControlPlaneFields = new Set<string>([
   "comment",
   "content",
@@ -14,6 +19,13 @@ export const forbiddenControlPlaneFields = new Set<string>([
   "title",
 ]);
 
+/**
+ * Find field paths that are not allowed in a control-plane payload.
+ *
+ * @param payload Value to inspect. Objects and arrays are walked recursively.
+ * @param path Path prefix used while walking nested values.
+ * @returns Prohibited field paths in traversal order.
+ */
 export function findProhibitedFieldPaths(
   payload: unknown,
   path = "",
@@ -38,6 +50,12 @@ export function findProhibitedFieldPaths(
   });
 }
 
+/**
+ * Reject plaintext and document-key fields before a payload reaches the API.
+ *
+ * @param payload Value to inspect.
+ * @throws {Error} When the payload contains a prohibited field name.
+ */
 export function assertNoPlaintextFields(payload: unknown): void {
   const prohibitedPaths = findProhibitedFieldPaths(payload);
 

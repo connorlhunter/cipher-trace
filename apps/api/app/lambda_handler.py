@@ -1,4 +1,8 @@
-"""AWS Lambda adapter for the FastAPI control plane."""
+"""Expose the FastAPI control plane through API Gateway and AWS Lambda.
+
+The adapter only translates request and response formats. It must not add
+background work or handle document content.
+"""
 
 from mangum import Mangum
 

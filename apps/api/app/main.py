@@ -19,6 +19,6 @@ app = FastAPI(
 
 @app.get("/health", tags=["operational"])
 async def health() -> dict[str, str]:
-    """Return a non-sensitive liveness response."""
+    """Return a public liveness response without trace or document data."""
 
     return {"status": "ok"}

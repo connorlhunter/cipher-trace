@@ -56,6 +56,10 @@ The production Lambda entrypoint is apps/api/app/lambda_handler.py. The applicat
 
 The Python and TypeScript libraries share a strict, structural trace-event envelope. They reject known plaintext and document-key field names, but deliberately do not implement encryption, signatures, canonical serialization, or ciphertext processing. Those protocol decisions remain gated by the roadmap and published architecture.
 
+### Contract APIs
+
+`cipher_trace_core` and `@cipher-trace/trace-contracts` expose the same small boundary: opaque identifiers, workflow event names, a trace-event envelope, and field-name checks. Python public APIs use short docstrings. TypeScript public exports use JSDoc with parameters, return values, and errors where that helps a caller.
+
 ## Coverage
 
 Both TypeScript and Python require at least 95% line and function coverage. Generate the matching overview, TypeScript, and Python reports with:
