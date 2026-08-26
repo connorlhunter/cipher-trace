@@ -10,5 +10,5 @@
     "target": "ES2024",
     "types": ["bun"]
   },
-  "include": ["scripts/**/*.ts"]
+  "include": ["eslint.config.ts", "scripts/**/*.ts"]
 }

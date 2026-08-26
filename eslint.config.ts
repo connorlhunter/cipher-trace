@@ -1,17 +1,6 @@
-import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-
-const typescriptRules = {
-  ...tseslint.configs.recommended.rules,
-  "@typescript-eslint/explicit-function-return-type": [
-    "error",
-    {
-      allowExpressions: true,
-    },
-  ],
-};
 
 export default [
   {
@@ -23,16 +12,9 @@ export default [
       "node_modules/**",
     ],
   },
+  ...tseslint.configs.recommended,
   {
-    files: ["**/*.js"],
-    languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
-    },
-    rules: js.configs.recommended.rules,
-  },
-  {
-    files: ["scripts/**/*.ts"],
+    files: ["scripts/**/*.ts", "eslint.config.ts"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -42,7 +24,14 @@ export default [
     plugins: {
       "@typescript-eslint": tseslint.plugin,
     },
-    rules: typescriptRules,
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
   },
   {
     files: ["packages/typescript/**/*.ts"],
@@ -55,7 +44,14 @@ export default [
     plugins: {
       "@typescript-eslint": tseslint.plugin,
     },
-    rules: typescriptRules,
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
   },
   {
     files: ["apps/web/**/*.{ts,tsx}"],
@@ -69,7 +65,14 @@ export default [
     plugins: {
       "@typescript-eslint": tseslint.plugin,
     },
-    rules: typescriptRules,
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
   },
   eslintConfigPrettier,
 ];
