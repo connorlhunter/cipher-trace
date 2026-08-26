@@ -36,13 +36,14 @@
     "prepare": "bun scripts/setup-git-hooks.ts",
     "test:ts": "bun test scripts packages/typescript",
     "toolchain:check": "bun scripts/check-toolchain.ts",
-    "typecheck:ts": "bun x tsc --build --pretty false",
+    "typecheck:ts": "tsgo --build --pretty false",
     "verify": "bun run verify:ts && bun run audit && bun run codeql:scan && uv run ruff check . && uv run mypy && bun run coverage:python",
     "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run coverage:typescript"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/bun": "^1.3.14",
+    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.6",
