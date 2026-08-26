@@ -44,6 +44,8 @@ bun run verify
 
 The bootstrap command installs Bun dependencies, syncs the Python workspace, and configures the repository hooks. The complete quality check validates naming, linked contracts, formatting, TypeScript, Python, tests, and local CodeQL security scans. CodeQL must resolve to the exact pinned CLI version on your PATH. It requires no cloud credentials.
 
+Both lockfiles are committed. `bun run audit` checks the reviewed dependency policy, Bun vulnerabilities, the uv lock, and installed Python package compatibility. Bun rejects packages newer than seven days unless `dependency-policy.toml` records a temporary exception.
+
 The FastAPI skeleton exposes only a health endpoint:
 
 ```sh
