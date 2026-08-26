@@ -5,6 +5,7 @@ import { coveragePaths } from "../coverage/coverage-paths";
 import { prepareCoveragePublication } from "../coverage/prepare-coverage-publication";
 
 const projectSlug = "cipher-trace";
+const temporaryCoveragePattern = ".*.tmp";
 
 export interface CoveragePublishDestination {
   readonly label: string;
@@ -185,8 +186,30 @@ export async function publishCoverage(
     console.log(`Publishing ${destination.label}: ${destination.target}`);
     await commandRunner(
       "aws",
-      ["s3", "sync", destination.source, destination.target, "--delete"],
+      [
+        "s3",
+        "sync",
+        destination.source,
+        destination.target,
+        "--delete",
+        "--exclude",
+        temporaryCoveragePattern,
+      ],
       destination.label,
+    );
+    await commandRunner(
+      "aws",
+      [
+        "s3",
+        "rm",
+        destination.target,
+        "--recursive",
+        "--exclude",
+        "*",
+        "--include",
+        temporaryCoveragePattern,
+      ],
+      `Remove temporary files from ${destination.label}`,
     );
   }
 
