@@ -1,3 +1,8 @@
+/**
+ * Public contracts shared by Cipher Trace browser and control-plane code.
+ *
+ * These exports validate only opaque, server-visible trace data.
+ */
 export {
   assertNoPlaintextFields,
   findProhibitedFieldPaths,

@@ -1,4 +1,8 @@
-"""Opaque identifier constraints shared by control-plane contracts."""
+"""Opaque identifier constraints shared by control-plane contracts.
+
+Identifiers are stable references, not document titles, filenames, or
+plaintext metadata.
+"""
 
 from typing import Annotated
 
