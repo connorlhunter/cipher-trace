@@ -6,6 +6,7 @@ __pycache__/
 .coverage
 coverage.xml
 /coverage/
+/.codeql/
 htmlcov/
 .venv/
 dist/

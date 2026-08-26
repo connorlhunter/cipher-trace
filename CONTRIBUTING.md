@@ -4,7 +4,7 @@ Create a branch from main, keep the change focused, and open a pull request.
 
 Every pull request except one opened by Dependabot must link a Cipher Trace issue with a recognized phrase such as Closes #<issue-number> or Related to #<issue-number>.
 
-Install Bun 1.3.14, Python 3.12, and uv 0.12.6. Run bun run bootstrap once after cloning, then bun run verify before opening or updating a pull request. The command validates repository naming, linked contracts, formatting, TypeScript, Python, and tests without cloud credentials.
+Install Bun 1.3.14, Python 3.12, uv 0.12.6, and CodeQL CLI 2.26.3. Run bun run bootstrap once after cloning, then bun run verify before opening or updating a pull request. The command validates repository naming, linked contracts, formatting, TypeScript, Python, tests, and local CodeQL findings without cloud credentials. CodeQL must resolve to the exact pinned version on your PATH.
 
 Branches use <type>/<kebab-case-name>. Commit, issue, and pull-request subjects use <type>[(scope)][!]: <imperative summary>, where <type> is feat, fix, chore, docs, test, or refactor. Issue forms supply the appropriate prefix.
 
