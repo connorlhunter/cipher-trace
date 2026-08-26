@@ -6,6 +6,9 @@
     },
     {
       "path": "./packages/typescript/trace-contracts"
+    },
+    {
+      "path": "./apps/web"
     }
   ]
 }

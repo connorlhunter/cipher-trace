@@ -23,7 +23,7 @@ DynamoDB is the live trace and workflow source of truth. A checkpoint worker per
 ```text
 apps/
   api/                         FastAPI control-plane Lambda
-  web/                         client-only encrypted document experience
+  web/                         React, TanStack Router, and Vite client foundation
   workers/                     ciphertext confirmer and trace projector boundaries
 infra/                         AWS deployment and least-privilege IaC boundary
 packages/python/               installable Python control-plane contracts
@@ -53,6 +53,8 @@ uv run uvicorn app.main:app --app-dir apps/api --reload
 ```
 
 The production Lambda entrypoint is apps/api/app/lambda_handler.py. The application must remain a JSON-only control plane: document bytes, plaintext metadata, and document keys do not belong in API Gateway, Lambda request bodies, logs, or error reports.
+
+The browser-only client base has a single local route and no API or document behavior. Start it with `bun run dev:web`; build it with `bun run build:web`. Its boundary and route guidance are in [apps/web/README.md](apps/web/README.md).
 
 The Python and TypeScript libraries share a strict, structural trace-event envelope. They reject known plaintext and document-key field names, but deliberately do not implement encryption, signatures, canonical serialization, or ciphertext processing. Those protocol decisions remain gated by the roadmap and published architecture.
 
