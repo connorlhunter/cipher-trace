@@ -52,7 +52,14 @@ export interface RenderCoveragePdfsOptions {
   readonly launchBrowser?: CoveragePdfBrowserLauncher;
 }
 
-/** Renders the overview, TypeScript, and Python coverage pages as PDFs. */
+/**
+ * Render the overview, TypeScript, and Python coverage pages as PDFs.
+ *
+ * @param workspaceRoot Repository root containing rendered coverage HTML.
+ * @param options Optional browser launcher for tests and automation.
+ * @returns Paths to the generated PDF files.
+ * @throws {Error} When a coverage page is missing or cannot be printed.
+ */
 export async function renderCoveragePdfs(
   workspaceRoot = process.cwd(),
   options: RenderCoveragePdfsOptions = {},
@@ -96,7 +103,13 @@ export async function renderCoveragePdfs(
   };
 }
 
-/** Runs PDF rendering and reports a non-sensitive CLI failure. */
+/**
+ * Run PDF rendering and report a non-sensitive CLI failure.
+ *
+ * @param render Optional render callback for tests.
+ * @param errorLog Destination for a safe failure message.
+ * @returns `true` when rendering completes.
+ */
 export async function renderCoveragePdfsCli(
   render: (() => Promise<unknown>) | undefined = undefined,
   errorLog: (message: string) => void = console.error,

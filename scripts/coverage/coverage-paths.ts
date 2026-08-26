@@ -16,7 +16,12 @@ export interface CoveragePagePaths {
   readonly pdf: string;
 }
 
-/** Resolves coverage inputs and publication pages beneath a workspace. */
+/**
+ * Resolve coverage inputs and publication pages beneath a workspace.
+ *
+ * @param workspaceRoot Repository root containing the coverage directory.
+ * @returns Absolute paths for LCOV inputs and rendered HTML and PDF pages.
+ */
 export function coveragePaths(workspaceRoot = process.cwd()): CoveragePaths {
   const directory = resolve(workspaceRoot, "coverage");
   const pythonDirectory = resolve(directory, "python");

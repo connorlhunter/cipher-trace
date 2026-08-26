@@ -34,6 +34,12 @@ const titlePattern = new RegExp(
 
 type Environment = Readonly<Record<string, string | undefined>>;
 
+/**
+ * Check whether a branch uses the repository naming convention.
+ *
+ * @param branchName Branch name to validate.
+ * @returns `true` for main, supported work and release branches, or Dependabot branches.
+ */
 export function isAllowedBranchName(branchName: string): boolean {
   return (
     branchName === "main" ||
@@ -43,10 +49,23 @@ export function isAllowedBranchName(branchName: string): boolean {
   );
 }
 
+/**
+ * Check whether a commit, pull request, or issue title has the required prefix.
+ *
+ * @param title Title to validate.
+ * @returns `true` when the title follows the repository convention.
+ */
 export function isAllowedChangeTitle(title: string): boolean {
   return titlePattern.test(title);
 }
 
+/**
+ * Resolve the checked branch from CI metadata or Git.
+ *
+ * @param environment CI and local environment values.
+ * @param readGitBranch Callback used when CI has not supplied a branch name.
+ * @returns The trimmed branch name, or an empty string when it is unavailable.
+ */
 export function currentBranchName(
   environment: Environment = process.env,
   readGitBranch: () => string = (): string => {
@@ -66,6 +85,12 @@ export function currentBranchName(
   );
 }
 
+/**
+ * Require a branch name accepted by this repository.
+ *
+ * @param branchName Branch name to validate.
+ * @throws {Error} When the branch name is not allowed.
+ */
 export function assertAllowedBranchName(branchName: string): void {
   if (!isAllowedBranchName(branchName)) {
     throw new Error(
@@ -76,6 +101,13 @@ export function assertAllowedBranchName(branchName: string): void {
   }
 }
 
+/**
+ * Require a title accepted by this repository.
+ *
+ * @param title Commit, issue, or pull request title to validate.
+ * @param label Human-readable name included in validation errors.
+ * @throws {Error} When the title is not allowed.
+ */
 export function assertAllowedChangeTitle(title: string, label: string): void {
   if (!isAllowedChangeTitle(title)) {
     throw new Error(
@@ -93,6 +125,13 @@ async function readCommitSubject(path: string): Promise<string> {
   return message.split(/\r?\n/u, 1)[0]?.trim() ?? "";
 }
 
+/**
+ * Run one supported naming check from the command line.
+ *
+ * @param arguments_ CLI arguments selecting the check.
+ * @param environment Environment values supplied by GitHub Actions or Git hooks.
+ * @throws {Error} When the arguments or checked name are invalid.
+ */
 export async function runChangeNaming(
   arguments_: readonly string[],
   environment: Environment,

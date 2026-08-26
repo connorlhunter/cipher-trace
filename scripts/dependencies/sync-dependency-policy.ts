@@ -89,7 +89,14 @@ function parsePackageJson(contents: string): PackageJson {
   }
 }
 
-/** Applies reviewed exact JavaScript overrides to package.json. */
+/**
+ * Apply reviewed exact JavaScript overrides to package.json.
+ *
+ * @param packageJson Current package.json contents.
+ * @param pins Approved package versions keyed by package name.
+ * @returns Formatted package.json contents with matching overrides.
+ * @throws {Error} When packageJson is invalid JSON.
+ */
 export function applyPinnedOverrides(
   packageJson: string,
   pins: DependencyPins,
@@ -108,7 +115,13 @@ export function applyPinnedOverrides(
   return JSON.stringify(parsed, null, 2) + "\n";
 }
 
-/** Applies reviewed Bun release-age exceptions to bunfig.toml. */
+/**
+ * Apply reviewed Bun release-age exceptions to bunfig.toml.
+ *
+ * @param bunfig Current bunfig.toml contents.
+ * @param excludes Package names approved to bypass the release-age delay.
+ * @returns bunfig.toml contents with matching exclusions.
+ */
 export function applyReleaseAgeExcludes(
   bunfig: string,
   excludes: string[],
@@ -139,7 +152,13 @@ export interface SyncDependencyPolicyOptions {
   root?: string;
 }
 
-/** Syncs the reviewed dependency policy into package-manager configuration. */
+/**
+ * Sync the reviewed dependency policy into package-manager configuration.
+ *
+ * @param options Select check-only mode or a repository root.
+ * @returns `true` when sync mode changed configuration files.
+ * @throws {Error} When the policy is invalid or check-only mode finds drift.
+ */
 export function syncDependencyPolicy(
   options: SyncDependencyPolicyOptions = {},
 ): boolean {
