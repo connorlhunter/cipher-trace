@@ -1,3 +1,8 @@
+/**
+ * Configure this checkout to use the repository-owned Git hooks.
+ *
+ * @throws {Error} When Git cannot persist the hook path.
+ */
 export function setupGitHooks(): void {
   const repository = Bun.spawnSync(["git", "rev-parse", "--git-dir"], {
     stderr: "ignore",

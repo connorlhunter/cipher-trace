@@ -27,7 +27,11 @@ const packageManifest = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
 ) as PackageManifest;
 
-/** Toolchain requirements read from their canonical manifests. */
+/**
+ * Toolchain requirements read from the repository's canonical manifests.
+ *
+ * Bun and CodeQL are exact pins. Python is a supported minimum version.
+ */
 export const requiredToolchains = Object.freeze({
   bun: bunVersion(
     requiredString(packageManifest.packageManager, "packageManager"),

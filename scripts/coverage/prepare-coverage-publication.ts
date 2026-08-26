@@ -28,7 +28,14 @@ export interface PrepareCoveragePublicationOptions {
   ) => Promise<RenderedCoveragePdfs>;
 }
 
-/** Stamps every Cipher Trace coverage page and renders matching PDFs. */
+/**
+ * Stamp every coverage page and render matching PDFs.
+ *
+ * @param workspaceRoot Repository root containing coverage inputs.
+ * @param updatedAt ISO timestamp applied to every page.
+ * @param options Optional renderer override for tests and automation.
+ * @returns Paths and timestamp ready for publication.
+ */
 export async function prepareCoveragePublication(
   workspaceRoot = process.cwd(),
   updatedAt = new Date().toISOString(),
@@ -57,7 +64,13 @@ export async function prepareCoveragePublication(
   };
 }
 
-/** Runs preparation and reports a non-sensitive CLI failure. */
+/**
+ * Run coverage preparation and report a non-sensitive CLI failure.
+ *
+ * @param prepare Optional preparation callback for tests.
+ * @param errorLog Destination for a safe failure message.
+ * @returns `true` when preparation completes.
+ */
 export async function prepareCoveragePublicationCli(
   prepare: (() => Promise<unknown>) | undefined = undefined,
   errorLog: (message: string) => void = console.error,
