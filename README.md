@@ -35,14 +35,14 @@ This repository starts as a security-conscious scaffold. It deliberately does no
 
 ## Development
 
-Install Bun 1.3.14, Python 3.12, and uv 0.12.6, then run:
+Install Bun 1.3.14, Python 3.12, uv 0.12.6, and CodeQL CLI 2.26.3, then run:
 
 ```sh
 bun run bootstrap
 bun run verify
 ```
 
-The bootstrap command installs Bun dependencies, syncs the Python workspace, and configures the repository hooks. The complete quality check validates naming, linked contracts, formatting, TypeScript, Python, and tests. It requires no cloud credentials.
+The bootstrap command installs Bun dependencies, syncs the Python workspace, and configures the repository hooks. The complete quality check validates naming, linked contracts, formatting, TypeScript, Python, tests, and local CodeQL security scans. CodeQL must resolve to the exact pinned CLI version on your PATH. It requires no cloud credentials.
 
 The FastAPI skeleton exposes only a health endpoint:
 
