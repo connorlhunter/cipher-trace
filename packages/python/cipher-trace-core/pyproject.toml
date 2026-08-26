@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cipher-trace-core"
-version = "0.1.0a0"
+version = "0.1.0a1"
 description = "Strict control-plane contracts for Cipher Trace"
 requires-python = ">=3.12"
 license = { text = "MIT" }

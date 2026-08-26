@@ -1,6 +1,6 @@
 [project]
 name = "cipher-trace"
-version = "0.1.0a0"
+version = "0.1.0a1"
 description = "End-to-end encrypted document provenance and approval platform"
 readme = "README.md"
 requires-python = ">=3.12"
