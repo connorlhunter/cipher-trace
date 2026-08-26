@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const typescriptRules = {
@@ -14,7 +15,13 @@ const typescriptRules = {
 
 export default [
   {
-    ignores: [".git/**", ".venv/**", "dist/**", "node_modules/**"],
+    ignores: [
+      ".git/**",
+      ".venv/**",
+      "dist/**",
+      "apps/web/dist/**",
+      "node_modules/**",
+    ],
   },
   {
     files: ["**/*.js"],
@@ -43,6 +50,20 @@ export default [
       parser: tseslint.parser,
       parserOptions: {
         project: "./packages/typescript/trace-contracts/tsconfig.json",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    rules: typescriptRules,
+  },
+  {
+    files: ["apps/web/**/*.{ts,tsx}"],
+    languageOptions: {
+      globals: globals.browser,
+      parser: tseslint.parser,
+      parserOptions: {
+        project: "./apps/web/tsconfig.json",
       },
     },
     plugins: {

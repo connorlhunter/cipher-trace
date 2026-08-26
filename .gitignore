@@ -10,6 +10,7 @@ coverage.xml
 htmlcov/
 .venv/
 dist/
+apps/web/dist/
 build/
 *.egg-info/
 node_modules/

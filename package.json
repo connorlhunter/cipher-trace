@@ -14,11 +14,13 @@
     "codeql": "2.26.3"
   },
   "workspaces": [
+    "apps/*",
     "packages/typescript/*"
   ],
   "scripts": {
     "audit": "bun run deps:policy:check && bun audit --audit-level=high && uv lock --check && uv run pip check",
     "bootstrap": "bun scripts/bootstrap.ts",
+    "build:web": "bun run --cwd apps/web build",
     "codeql:scan": "bun scripts/security/codeql-scan.ts",
     "coverage:build": "bun run coverage:typescript && bun run coverage:python && bun run coverage:render && bun run coverage:render:pdf",
     "coverage:publish": "bun run coverage:typescript && bun run coverage:python && bun scripts/publish/publish-coverage.ts",
@@ -28,6 +30,7 @@
     "coverage:typescript": "bun test packages/typescript --coverage --coverage-reporter=text --coverage-reporter=lcov --coverage-dir=coverage --timeout 30000 && bun scripts/coverage/check-typescript-coverage.ts",
     "deps:policy": "bun scripts/dependencies/sync-dependency-policy.ts",
     "deps:policy:check": "bun scripts/dependencies/sync-dependency-policy.ts --check",
+    "dev:web": "bun run --cwd apps/web dev",
     "format": "bun x prettier --write . --ignore-unknown",
     "format:check": "bun x prettier --check . --ignore-unknown",
     "hooks:setup": "bun scripts/setup-git-hooks.ts",
@@ -38,7 +41,7 @@
     "toolchain:check": "bun scripts/check-toolchain.ts",
     "typecheck:ts": "tsgo --build --pretty false",
     "verify": "bun run verify:ts && bun run audit && bun run codeql:scan && uv run ruff check . && uv run mypy && bun run coverage:python",
-    "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run coverage:typescript"
+    "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run build:web && bun run coverage:typescript"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -46,6 +49,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20260707.2",
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.11.0",
     "prettier": "^3.9.6",
     "puppeteer": "^25.3.0",
     "typescript": "^6.0.3",
