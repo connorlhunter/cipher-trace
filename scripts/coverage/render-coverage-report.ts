@@ -14,7 +14,12 @@ export interface CoverageFile {
 
 const minimumCoveragePercent = 95;
 
-/** Parses Bun and coverage.py LCOV output into file coverage records. */
+/**
+ * Parse Bun and coverage.py LCOV output into file coverage records.
+ *
+ * @param lcov Raw LCOV contents.
+ * @returns One aggregate record for each source file in the report.
+ */
 export function parseLcov(lcov: string): CoverageFile[] {
   const files: CoverageFile[] = [];
   let current:
@@ -47,7 +52,14 @@ export function parseLcov(lcov: string): CoverageFile[] {
   return files;
 }
 
-/** Renders the overview plus TypeScript and Python coverage pages. */
+/**
+ * Render the overview plus TypeScript and Python coverage pages.
+ *
+ * @param typescriptLcovPath TypeScript LCOV input path.
+ * @param pythonLcovPath Python LCOV input path.
+ * @param outputRoot Directory for rendered report pages.
+ * @param updatedAt ISO timestamp shown on each page.
+ */
 export function renderCoverageReport(
   typescriptLcovPath = join("coverage", "lcov.info"),
   pythonLcovPath = join("coverage", "python.lcov"),
@@ -117,7 +129,13 @@ function reportPath(path: string): string {
   return isAbsolute(path) ? relative(process.cwd(), path) : path;
 }
 
-/** Normalizes a project-owned coverage publication time to ISO UTC. */
+/**
+ * Normalize a project-owned coverage publication time to ISO UTC.
+ *
+ * @param value Timestamp accepted by the JavaScript Date constructor.
+ * @returns Canonical ISO-8601 UTC timestamp.
+ * @throws {Error} When the timestamp is invalid.
+ */
 export function coverageUpdatedAt(value: string): string {
   const timestamp = new Date(value);
 

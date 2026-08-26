@@ -6,16 +6,34 @@ const dependabotLogin = "dependabot[bot]";
 
 type Environment = Readonly<Record<string, string | undefined>>;
 
+/**
+ * Check whether a pull request body links a Cipher Trace issue.
+ *
+ * @param pullRequestBody Pull request description to inspect.
+ * @returns `true` when a recognized issue reference is present.
+ */
 export function hasLinkedIssue(pullRequestBody: string): boolean {
   return issueReferencePattern.test(pullRequestBody);
 }
 
+/**
+ * Check whether a pull request was opened by Dependabot.
+ *
+ * @param pullRequestAuthor GitHub login from the pull request event.
+ * @returns `true` for Dependabot's expected login.
+ */
 export function isDependabotPullRequest(
   pullRequestAuthor: string | undefined,
 ): boolean {
   return pullRequestAuthor === dependabotLogin;
 }
 
+/**
+ * Require a recognized issue reference in a pull request body.
+ *
+ * @param pullRequestBody Pull request description to inspect.
+ * @throws {Error} When no accepted issue reference is present.
+ */
 export function assertLinkedIssue(pullRequestBody: string): void {
   if (!hasLinkedIssue(pullRequestBody)) {
     throw new Error(
@@ -24,6 +42,13 @@ export function assertLinkedIssue(pullRequestBody: string): void {
   }
 }
 
+/**
+ * Run the pull-request issue-link check from the command line.
+ *
+ * @param arguments_ CLI arguments selecting the pull request body check.
+ * @param environment GitHub event values used by the check.
+ * @throws {Error} When arguments are invalid or the pull request is unlinked.
+ */
 export async function runIssueLinkCheck(
   arguments_: readonly string[],
   environment: Environment,

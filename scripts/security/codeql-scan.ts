@@ -64,6 +64,7 @@ export interface ScanSummary {
   skipped: boolean;
 }
 
+/** Execute CodeQL commands with Bun in the current working tree. */
 export const liveRunner: CommandRunner = {
   run(command, options) {
     if (options.captureOutput) {
@@ -88,6 +89,7 @@ export const liveRunner: CommandRunner = {
   },
 };
 
+/** Read and create the local files used by the CodeQL scan. */
 export const liveFileSystem: ScanFileSystem = {
   makeDirectory(path) {
     mkdirSync(path, { recursive: true });
@@ -101,6 +103,12 @@ export const liveFileSystem: ScanFileSystem = {
   },
 };
 
+/**
+ * Build the CodeQL command that creates one local analysis database.
+ *
+ * @param target Language and query suite selected for scanning.
+ * @returns Exact arguments for `codeql database create`.
+ */
 export function databaseCreateCommand(target: ScanTarget): string[] {
   return [
     "codeql",
@@ -117,6 +125,12 @@ export function databaseCreateCommand(target: ScanTarget): string[] {
   ];
 }
 
+/**
+ * Build the CodeQL command that analyzes one local database.
+ *
+ * @param target Language and query suite selected for scanning.
+ * @returns Exact arguments for `codeql database analyze`.
+ */
 export function databaseAnalyzeCommand(target: ScanTarget): string[] {
   return [
     "codeql",
@@ -133,6 +147,13 @@ export function databaseAnalyzeCommand(target: ScanTarget): string[] {
   ];
 }
 
+/**
+ * Count findings in CodeQL SARIF output.
+ *
+ * @param sarif Parsed SARIF document.
+ * @returns Total result count across every run.
+ * @throws {Error} When the document is not valid SARIF for this scanner.
+ */
 export function sarifResultCount(sarif: unknown): number {
   if (typeof sarif !== "object" || sarif === null || !("runs" in sarif)) {
     throw new Error("CodeQL produced invalid SARIF: runs are missing.");
@@ -193,7 +214,16 @@ function assertCodeqlVersion(runner: CommandRunner, root: string): void {
   }
 }
 
-/** Runs local security-extended CodeQL analysis and rejects every SARIF finding. */
+/**
+ * Run local security-extended CodeQL analysis and reject every SARIF finding.
+ *
+ * @param environment Scan environment and repository location.
+ * @param runner Command runner used to execute CodeQL.
+ * @param fileSystem Filesystem operations used for scan output.
+ * @param log Safe destination for progress messages.
+ * @returns The result count, or a hosted-CI deferral summary.
+ * @throws {Error} When CodeQL cannot run or reports a finding.
+ */
 export function runCodeqlScan(
   environment: ScanEnvironment,
   runner: CommandRunner,
@@ -265,7 +295,16 @@ export function runCodeqlScan(
   return { findings, skipped: false };
 }
 
-/** Runs the local scanner and reports a non-sensitive CLI failure. */
+/**
+ * Run the local scanner and report a non-sensitive CLI failure.
+ *
+ * @param environment Scan environment and repository location.
+ * @param runner Command runner used to execute CodeQL.
+ * @param fileSystem Filesystem operations used for scan output.
+ * @param log Safe destination for progress messages.
+ * @param errorLog Safe destination for failure messages.
+ * @returns A scan summary, or `undefined` after a handled failure.
+ */
 export function runCodeqlCli(
   environment: ScanEnvironment,
   runner: CommandRunner,

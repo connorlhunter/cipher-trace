@@ -1,5 +1,13 @@
 import { requiredToolchains } from "./toolchains.ts";
 
+/**
+ * Read the version reported by a required executable.
+ *
+ * @param command Executable available on PATH.
+ * @param arguments_ Arguments used to request its version.
+ * @returns The trimmed version output.
+ * @throws {Error} When the executable cannot run successfully.
+ */
 function commandVersion(
   command: string,
   arguments_: readonly string[],
@@ -18,6 +26,12 @@ function commandVersion(
   return new TextDecoder().decode(result.stdout).trim();
 }
 
+/**
+ * Require the supported Python major and minimum minor version.
+ *
+ * @param versionOutput Output from `python3 --version`.
+ * @throws {Error} When the installed Python version is unsupported.
+ */
 function assertPythonVersion(versionOutput: string): void {
   const match = /^Python (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$/u.exec(
     versionOutput,

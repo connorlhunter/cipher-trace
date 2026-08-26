@@ -52,7 +52,14 @@ function s3Uri(bucket: string, key: string): string {
   return key ? `s3://${bucket}/${key}/` : `s3://${bucket}/`;
 }
 
-/** Builds the optional durable-source and live destinations for coverage. */
+/**
+ * Build the optional durable-source and live destinations for coverage.
+ *
+ * @param env Publication environment values.
+ * @param workspaceRoot Repository root containing coverage output.
+ * @returns S3 destinations for generated coverage artifacts.
+ * @throws {Error} When no configured artifact bucket is available.
+ */
 export function coveragePublishDestinations(
   env: NodeJS.ProcessEnv = process.env,
   workspaceRoot = process.cwd(),
@@ -103,7 +110,12 @@ export function coveragePublishDestinations(
   return destinations;
 }
 
-/** Builds the project-scoped CloudFront invalidation. */
+/**
+ * Build the project-scoped CloudFront invalidation.
+ *
+ * @param env Publication environment values.
+ * @returns An empty list when no distribution is configured.
+ */
 export function coverageInvalidations(
   env: NodeJS.ProcessEnv = process.env,
 ): CoverageInvalidation[] {
@@ -119,7 +131,14 @@ export function coverageInvalidations(
     : [];
 }
 
-/** Runs one publication command and includes its output in failures. */
+/**
+ * Run one publication command and include its output in failures.
+ *
+ * @param command Executable to run without a shell.
+ * @param args Exact arguments passed to the executable.
+ * @param subject Safe label included in failure messages.
+ * @returns A promise that resolves only when the command succeeds.
+ */
 export const defaultCommandRunner: CommandRunner = (command, args, subject) =>
   new Promise((resolve, reject) => {
     const child = spawn(command, [...args], {
@@ -157,7 +176,13 @@ export const defaultCommandRunner: CommandRunner = (command, args, subject) =>
     });
   });
 
-/** Uploads prepared coverage files to Cipher Trace's project prefix. */
+/**
+ * Upload prepared coverage files to Cipher Trace's project prefix.
+ *
+ * @param options Optional environment, command runner, and workspace root.
+ * @returns A promise that resolves after uploads and invalidation finish.
+ * @throws {Error} When generated coverage files or publication settings are missing.
+ */
 export async function publishCoverage(
   options: PublishCoverageOptions = {},
 ): Promise<void> {
@@ -231,7 +256,12 @@ export async function publishCoverage(
   console.log("Published Cipher Trace coverage artifacts.");
 }
 
-/** Creates one timestamp, renders every page and PDF, then publishes them. */
+/**
+ * Create one timestamp, render every page and PDF, then publish them.
+ *
+ * @param options Optional timestamp and publication collaborators.
+ * @returns A promise that resolves when the publication is complete.
+ */
 export async function publishCoveragePublication(
   options: PublishCoveragePublicationOptions = {},
 ): Promise<void> {

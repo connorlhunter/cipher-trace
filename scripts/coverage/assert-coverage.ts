@@ -15,7 +15,12 @@ export interface CoverageTotals {
   readonly lines: CoverageMetric;
 }
 
-/** Calculates global line and function coverage from one LCOV report. */
+/**
+ * Calculate global line and function coverage from one LCOV report.
+ *
+ * @param lcov LCOV contents from the TypeScript or Python test run.
+ * @returns Aggregate function and line totals.
+ */
 export function coverageTotals(lcov: string): CoverageTotals {
   return parseLcov(lcov).reduce<CoverageTotals>(
     (totals, file) => ({
@@ -36,7 +41,15 @@ function percentage(metric: CoverageMetric): number {
   return metric.found === 0 ? 100 : (metric.covered / metric.found) * 100;
 }
 
-/** Throws unless global line and function coverage meet the configured floor. */
+/**
+ * Require global line and function coverage to meet the configured floor.
+ *
+ * @param lcov LCOV contents to evaluate.
+ * @param surface Code surface shown in an error message.
+ * @param threshold Minimum percentage for both metrics.
+ * @returns Aggregate function and line totals.
+ * @throws {Error} When either metric is below the threshold.
+ */
 export function assertCoverageThreshold(
   lcov: string,
   surface: string,
@@ -60,7 +73,14 @@ export function assertCoverageThreshold(
   return totals;
 }
 
-/** Reads and validates a persisted LCOV report. */
+/**
+ * Read and validate a persisted LCOV report.
+ *
+ * @param path Path to the LCOV file.
+ * @param surface Code surface shown in an error message.
+ * @returns Aggregate function and line totals.
+ * @throws {Error} When the report cannot meet the coverage floor.
+ */
 export function assertCoverageFile(
   path: string,
   surface: string,
