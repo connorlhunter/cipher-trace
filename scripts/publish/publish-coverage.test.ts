@@ -20,12 +20,7 @@ const publicationEnvironment: NodeJS.ProcessEnv = {
 };
 
 test("builds project-scoped coverage destinations", (): void => {
-  expect(
-    coveragePublishDestinations(
-      publicationEnvironment,
-      "/workspace/cipher-trace",
-    ),
-  ).toEqual([
+  expect(coveragePublishDestinations(publicationEnvironment, "/workspace/cipher-trace")).toEqual([
     {
       label: "Source coverage copy",
       source: join("/workspace/cipher-trace", "coverage"),
@@ -49,9 +44,7 @@ test("builds a project-scoped coverage invalidation", (): void => {
 });
 
 test("excludes and removes temporary coverage files during publication", async (): Promise<void> => {
-  const workspaceRoot = mkdtempSync(
-    join(tmpdir(), "cipher-trace-coverage-publish-"),
-  );
+  const workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-trace-coverage-publish-"));
   const paths = coveragePaths(workspaceRoot);
   const requiredFiles = [
     paths.overview.html,

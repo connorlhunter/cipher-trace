@@ -22,9 +22,7 @@ export function hasLinkedIssue(pullRequestBody: string): boolean {
  * @param pullRequestAuthor GitHub login from the pull request event.
  * @returns `true` for Dependabot's expected login.
  */
-export function isDependabotPullRequest(
-  pullRequestAuthor: string | undefined,
-): boolean {
+export function isDependabotPullRequest(pullRequestAuthor: string | undefined): boolean {
   return pullRequestAuthor === dependabotLogin;
 }
 

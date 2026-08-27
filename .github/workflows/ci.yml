@@ -39,9 +39,7 @@ jobs:
           CIPHER_TRACE_PULL_REQUEST_AUTHOR: ${{ github.event.pull_request.user.login }}
           CIPHER_TRACE_PULL_REQUEST_BODY: ${{ github.event.pull_request.body }}
       - run: bun run audit
-      - run: bun run format:check
-      - run: bun run lint:ts
-      - run: bun run typecheck:ts
+      - run: bun run check:ts
       - name: Build browser client
         run: bun run build:web
       - name: Enforce TypeScript coverage at 95%

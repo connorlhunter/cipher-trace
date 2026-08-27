@@ -18,18 +18,8 @@ test("resolves overview, TypeScript, and Python coverage files", (): void => {
       pdf: join("/workspace/cipher-trace", "coverage", "python", "index.pdf"),
     },
     typescript: {
-      html: join(
-        "/workspace/cipher-trace",
-        "coverage",
-        "typescript",
-        "index.html",
-      ),
-      pdf: join(
-        "/workspace/cipher-trace",
-        "coverage",
-        "typescript",
-        "index.pdf",
-      ),
+      html: join("/workspace/cipher-trace", "coverage", "typescript", "index.html"),
+      pdf: join("/workspace/cipher-trace", "coverage", "typescript", "index.pdf"),
     },
   });
 });

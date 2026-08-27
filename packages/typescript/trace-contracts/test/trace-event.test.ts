@@ -51,16 +51,9 @@ test("finds prohibited nested field names", (): void => {
 
 test("rejects forbidden fields within arrays", (): void => {
   const payload = {
-    revisions: [
-      { encrypted_metadata_envelope: "opaque" },
-      { " File-Name ": "not allowed" },
-    ],
+    revisions: [{ encrypted_metadata_envelope: "opaque" }, { " File-Name ": "not allowed" }],
   };
 
-  expect(findProhibitedFieldPaths(payload)).toEqual([
-    "revisions[1]. File-Name ",
-  ]);
-  expect((): void => assertNoPlaintextFields(payload)).toThrow(
-    "revisions[1]. File-Name ",
-  );
+  expect(findProhibitedFieldPaths(payload)).toEqual(["revisions[1]. File-Name "]);
+  expect((): void => assertNoPlaintextFields(payload)).toThrow("revisions[1]. File-Name ");
 });

@@ -4,10 +4,7 @@ import {
   type RenderCoveragePdfsOptions,
   type RenderedCoveragePdfs,
 } from "./render-coverage-pdf";
-import {
-  coverageUpdatedAt,
-  renderCoverageReport,
-} from "./render-coverage-report";
+import { coverageUpdatedAt, renderCoverageReport } from "./render-coverage-report";
 
 /** Files and timestamp prepared immediately before coverage publication. */
 export interface PreparedCoveragePublication {
@@ -43,12 +40,7 @@ export async function prepareCoveragePublication(
 ): Promise<PreparedCoveragePublication> {
   const paths = coveragePaths(workspaceRoot);
   const publicationDate = coverageUpdatedAt(updatedAt);
-  renderCoverageReport(
-    paths.typescriptLcov,
-    paths.pythonLcov,
-    paths.directory,
-    publicationDate,
-  );
+  renderCoverageReport(paths.typescriptLcov, paths.pythonLcov, paths.directory, publicationDate);
   const pdf = await (options.renderPdfs ?? renderCoveragePdfs)(workspaceRoot);
 
   console.log(`Prepared coverage publication: ${publicationDate}`);
@@ -72,7 +64,7 @@ export async function prepareCoveragePublication(
  * @returns `true` when preparation completes.
  */
 export async function prepareCoveragePublicationCli(
-  prepare: (() => Promise<unknown>) | undefined = undefined,
+  prepare?: () => Promise<unknown>,
   errorLog: (message: string) => void = console.error,
 ): Promise<boolean> {
   try {

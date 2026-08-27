@@ -22,9 +22,7 @@ const minimumCoveragePercent = 95;
  */
 export function parseLcov(lcov: string): CoverageFile[] {
   const files: CoverageFile[] = [];
-  let current:
-    | { functions: CoverageMetric; lines: CoverageMetric; path: string }
-    | undefined;
+  let current: { functions: CoverageMetric; lines: CoverageMetric; path: string } | undefined;
 
   for (const line of lcov.split(/\r?\n/u)) {
     if (line.startsWith("SF:")) {
@@ -36,14 +34,10 @@ export function parseLcov(lcov: string): CoverageFile[] {
       continue;
     }
     if (!current) continue;
-    if (line.startsWith("FNF:"))
-      current.functions = { ...current.functions, found: value(line) };
-    if (line.startsWith("FNH:"))
-      current.functions = { ...current.functions, covered: value(line) };
-    if (line.startsWith("LF:"))
-      current.lines = { ...current.lines, found: value(line) };
-    if (line.startsWith("LH:"))
-      current.lines = { ...current.lines, covered: value(line) };
+    if (line.startsWith("FNF:")) current.functions = { ...current.functions, found: value(line) };
+    if (line.startsWith("FNH:")) current.functions = { ...current.functions, covered: value(line) };
+    if (line.startsWith("LF:")) current.lines = { ...current.lines, found: value(line) };
+    if (line.startsWith("LH:")) current.lines = { ...current.lines, covered: value(line) };
     if (line === "end_of_record") {
       files.push(current);
       current = undefined;
@@ -99,15 +93,10 @@ function value(line: string): number {
 }
 
 function percent(metric: CoverageMetric): string {
-  return metric.found === 0
-    ? "100.00"
-    : ((metric.covered / metric.found) * 100).toFixed(2);
+  return metric.found === 0 ? "100.00" : ((metric.covered / metric.found) * 100).toFixed(2);
 }
 
-function total(
-  files: CoverageFile[],
-  key: "functions" | "lines",
-): CoverageMetric {
+function total(files: CoverageFile[], key: "functions" | "lines"): CoverageMetric {
   return files.reduce(
     (result, file) => ({
       covered: result.covered + file[key].covered,
@@ -118,10 +107,7 @@ function total(
 }
 
 function html(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 /** Returns a report path relative to the checkout when the source is absolute. */
@@ -292,9 +278,7 @@ function page(
   current: "overview" | "python" | "typescript",
 ): string {
   const href = (surface: "typescript" | "python"): string =>
-    indexHref === "index.html"
-      ? `${surface}/index.html`
-      : `../${surface}/index.html`;
+    indexHref === "index.html" ? `${surface}/index.html` : `../${surface}/index.html`;
   return `<!doctype html>
 <html data-scheme="atlas" lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title>
 <style>${themeCss()}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:.9375rem/1.5 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{width:min(100%,72rem);margin:0 auto;padding:clamp(1.25rem,4vw,3rem)}header{margin-bottom:1.25rem}h1{margin:0;font-size:clamp(1.75rem,4vw,2.75rem);line-height:1.05}p{margin:.5rem 0 0;color:var(--muted)}a{color:var(--accent);font-weight:700;text-underline-offset:.2em}nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}nav a{border:1px solid var(--border);border-radius:999px;background:var(--panel);padding:.45rem .75rem;text-decoration:none}nav a[aria-current="page"]{border-color:var(--accent);background:var(--accent-soft)}.coverage-updated{margin:0 0 1.25rem;color:var(--muted);font-size:.8rem;font-weight:700}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:.5rem;background:var(--panel)}table{width:100%;min-width:36rem;border-collapse:collapse}th,td{border-bottom:1px solid var(--border);padding:.85rem 1rem;text-align:left;vertical-align:top}thead th{color:var(--muted);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase}tbody tr:first-child{background:color-mix(in srgb,var(--accent) 10%,transparent);font-weight:800}tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}@media(max-width:600px){main{padding:1.25rem .75rem}table{min-width:31rem}th,td{padding:.7rem .75rem}}</style>${themeScript()}</head>
