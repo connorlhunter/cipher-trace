@@ -9,7 +9,7 @@ from fastapi import FastAPI
 
 app = FastAPI(
     title="Cipher Trace API",
-    version="0.1.0a1",
+    version="0.1.0a2",
     description=(
         "Control-plane API for encrypted document provenance. "
         "It must never decrypt or proxy document plaintext."
