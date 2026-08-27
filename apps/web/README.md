@@ -1,6 +1,6 @@
 # Cipher Trace web client
 
-This is the client-only web base for Cipher Trace. It uses React, TanStack Router, and Vite. The base currently has one local route and no API client, authentication flow, upload flow, analytics, or document handling.
+This is the client-only web base for Cipher Trace. It uses React, TanStack Router, and Vite+. The base currently has one local route and no API client, authentication flow, upload flow, analytics, or document handling.
 
 ## Run locally
 
@@ -14,11 +14,11 @@ bun run dev:web
 Build the client with:
 
 ```sh
-bun run --cwd apps/web build
+bun run build:web
 ```
 
-The build uses `tsgo`, the native TypeScript compiler, before Vite creates the
-browser bundle.
+Vite+ builds the browser bundle and runs the web development server. Repository
+checks use Oxfmt, Oxlint, and TypeScript type checking from the repository root.
 
 The router is code-based for this foundation. It has no generated route tree and no server-rendered routes. Add routes only when the related client and protocol issue is ready.
 

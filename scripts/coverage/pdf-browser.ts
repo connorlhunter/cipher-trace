@@ -6,13 +6,9 @@ import type { LaunchOptions } from "puppeteer";
  * @param continuousIntegration Whether Chromium runs in a CI environment.
  * @returns Launch options safe for the current environment.
  */
-export function pdfBrowserLaunchOptions(
-  continuousIntegration: boolean,
-): LaunchOptions {
+export function pdfBrowserLaunchOptions(continuousIntegration: boolean): LaunchOptions {
   return {
-    args: continuousIntegration
-      ? ["--no-sandbox", "--disable-setuid-sandbox"]
-      : [],
+    args: continuousIntegration ? ["--no-sandbox", "--disable-setuid-sandbox"] : [],
     headless: true,
   };
 }

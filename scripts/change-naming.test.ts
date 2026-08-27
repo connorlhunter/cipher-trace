@@ -10,8 +10,6 @@ test("accepts the Cipher Trace branch convention", (): void => {
 });
 
 test("accepts the Cipher Trace title convention", (): void => {
-  expect(isAllowedChangeTitle("chore(contracts): add strict event model")).toBe(
-    true,
-  );
+  expect(isAllowedChangeTitle("chore(contracts): add strict event model")).toBe(true);
   expect(isAllowedChangeTitle("add strict event model")).toBe(false);
 });

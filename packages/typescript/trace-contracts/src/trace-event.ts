@@ -32,12 +32,7 @@ export const traceEventSchema = z
     previous_event_digest: z.string().min(16).max(256).nullable().optional(),
     event_digest: z.string().min(16).max(256),
     signature: z.string().min(16).max(16384),
-    encrypted_metadata_envelope: z
-      .string()
-      .min(1)
-      .max(65536)
-      .nullable()
-      .optional(),
+    encrypted_metadata_envelope: z.string().min(1).max(65536).nullable().optional(),
   })
   .strict();
 

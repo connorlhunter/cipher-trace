@@ -75,12 +75,7 @@ export function coveragePublishDestinations(
       source,
       target: s3Uri(
         sourceBucket,
-        keyPath(
-          envValue(env.SOURCE_ARTIFACTS_PREFIX),
-          "projects",
-          projectSlug,
-          "coverage",
-        ),
+        keyPath(envValue(env.SOURCE_ARTIFACTS_PREFIX), "projects", projectSlug, "coverage"),
       ),
     });
   }
@@ -91,12 +86,7 @@ export function coveragePublishDestinations(
       source,
       target: s3Uri(
         artifactsBucket,
-        keyPath(
-          envValue(env.ARTIFACTS_PREFIX),
-          "projects",
-          projectSlug,
-          "coverage",
-        ),
+        keyPath(envValue(env.ARTIFACTS_PREFIX), "projects", projectSlug, "coverage"),
       ),
     });
   }
@@ -164,11 +154,7 @@ export const defaultCommandRunner: CommandRunner = (command, args, subject) =>
 
       reject(
         new Error(
-          [
-            `${subject} failed with exit code ${code ?? "unknown"}.`,
-            stdout.trim(),
-            stderr.trim(),
-          ]
+          [`${subject} failed with exit code ${code ?? "unknown"}.`, stdout.trim(), stderr.trim()]
             .filter(Boolean)
             .join("\n"),
         ),
@@ -183,9 +169,7 @@ export const defaultCommandRunner: CommandRunner = (command, args, subject) =>
  * @returns A promise that resolves after uploads and invalidation finish.
  * @throws {Error} When generated coverage files or publication settings are missing.
  */
-export async function publishCoverage(
-  options: PublishCoverageOptions = {},
-): Promise<void> {
+export async function publishCoverage(options: PublishCoverageOptions = {}): Promise<void> {
   const env = options.env ?? process.env;
   const commandRunner = options.commandRunner ?? defaultCommandRunner;
   const paths = coveragePaths(options.workspaceRoot);
@@ -199,15 +183,10 @@ export async function publishCoverage(
   ];
 
   if (requiredFiles.some((path) => !existsSync(path))) {
-    throw new Error(
-      "Missing Cipher Trace coverage HTML or PDF output. Prepare coverage first.",
-    );
+    throw new Error("Missing Cipher Trace coverage HTML or PDF output. Prepare coverage first.");
   }
 
-  for (const destination of coveragePublishDestinations(
-    env,
-    options.workspaceRoot,
-  )) {
+  for (const destination of coveragePublishDestinations(env, options.workspaceRoot)) {
     console.log(`Publishing ${destination.label}: ${destination.target}`);
     await commandRunner(
       "aws",

@@ -1,10 +1,5 @@
 import type { ReactElement } from "react";
-import {
-  Outlet,
-  createRootRoute,
-  createRoute,
-  createRouter,
-} from "@tanstack/react-router";
+import { Outlet, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
 
 /** Render the browser-only route outlet without document or API state. */
 function RootLayout(): ReactElement {
@@ -21,10 +16,7 @@ function HomePage(): ReactElement {
     <section aria-labelledby="page-title" className="welcome-panel">
       <p className="eyebrow">Cipher Trace</p>
       <h1 id="page-title">Encrypted document history, kept private.</h1>
-      <p>
-        The web client foundation is ready for the approved encryption and
-        workflow contracts.
-      </p>
+      <p>The web client foundation is ready for the approved encryption and workflow contracts.</p>
     </section>
   );
 }

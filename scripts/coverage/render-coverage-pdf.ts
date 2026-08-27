@@ -31,10 +31,7 @@ export interface CoveragePdfOptions {
 export interface CoveragePdfPage {
   close(): Promise<void>;
   emulateMediaType(type?: string): Promise<void>;
-  goto(
-    url: string,
-    options?: { readonly waitUntil?: "networkidle0" },
-  ): Promise<unknown>;
+  goto(url: string, options?: { readonly waitUntil?: "networkidle0" }): Promise<unknown>;
   pdf(options?: CoveragePdfOptions): Promise<Uint8Array>;
 }
 
@@ -66,22 +63,15 @@ export async function renderCoveragePdfs(
 ): Promise<RenderedCoveragePdfs> {
   const paths = coveragePaths(workspaceRoot);
 
-  for (const input of [
-    paths.overview.html,
-    paths.typescript.html,
-    paths.python.html,
-  ]) {
+  for (const input of [paths.overview.html, paths.typescript.html, paths.python.html]) {
     if (!existsSync(input)) {
-      throw new Error(
-        `Missing coverage report: ${input}. Render coverage HTML first.`,
-      );
+      throw new Error(`Missing coverage report: ${input}. Render coverage HTML first.`);
     }
   }
 
   const launchBrowser =
     options.launchBrowser ??
-    (() =>
-      puppeteer.launch(pdfBrowserLaunchOptions(process.env.CI === "true")));
+    (() => puppeteer.launch(pdfBrowserLaunchOptions(process.env.CI === "true")));
   const browser = await launchBrowser();
 
   try {
@@ -111,7 +101,7 @@ export async function renderCoveragePdfs(
  * @returns `true` when rendering completes.
  */
 export async function renderCoveragePdfsCli(
-  render: (() => Promise<unknown>) | undefined = undefined,
+  render?: () => Promise<unknown>,
   errorLog: (message: string) => void = console.error,
 ): Promise<boolean> {
   try {

@@ -42,8 +42,7 @@ describe("dependency policy sync", () => {
   });
 
   test("adds, sorts, and removes reviewed release-age exceptions", () => {
-    const bunfig =
-      '[install]\nminimumReleaseAge = 604800\n\n[test]\ncoverageDir = "coverage"\n';
+    const bunfig = '[install]\nminimumReleaseAge = 604800\n\n[test]\ncoverageDir = "coverage"\n';
 
     expect(applyReleaseAgeExcludes(bunfig, ["ws", "mermaid"])).toBe(
       '[install]\nminimumReleaseAge = 604800\nminimumReleaseAgeExcludes = ["mermaid","ws"]\n\n[test]\ncoverageDir = "coverage"\n',
@@ -64,10 +63,7 @@ describe("dependency policy sync", () => {
         root + "/package.json",
         JSON.stringify({ name: "cipher-trace" }, null, 2) + "\n",
       );
-      writeFileSync(
-        root + "/bunfig.toml",
-        "[install]\nminimumReleaseAge = 604800\n",
-      );
+      writeFileSync(root + "/bunfig.toml", "[install]\nminimumReleaseAge = 604800\n");
       writeFileSync(
         root + "/dependency-policy.toml",
         `[pins.ws]
@@ -84,9 +80,7 @@ reason = "Allow a reviewed fix before the seven-day release-age window."
       );
       expect(syncDependencyPolicy({ root })).toBe(true);
       expect(syncDependencyPolicy({ checkOnly: true, root })).toBe(false);
-      expect(
-        JSON.parse(readFileSync(root + "/package.json", "utf8")),
-      ).toMatchObject({
+      expect(JSON.parse(readFileSync(root + "/package.json", "utf8"))).toMatchObject({
         overrides: { ws: "8.21.0" },
       });
       expect(readFileSync(root + "/bunfig.toml", "utf8")).toContain(

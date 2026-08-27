@@ -26,10 +26,7 @@ export const forbiddenControlPlaneFields = new Set<string>([
  * @param path Path prefix used while walking nested values.
  * @returns Prohibited field paths in traversal order.
  */
-export function findProhibitedFieldPaths(
-  payload: unknown,
-  path = "",
-): string[] {
+export function findProhibitedFieldPaths(payload: unknown, path = ""): string[] {
   if (Array.isArray(payload)) {
     return payload.flatMap((value, index): string[] =>
       findProhibitedFieldPaths(value, path + "[" + String(index) + "]"),
@@ -61,8 +58,7 @@ export function assertNoPlaintextFields(payload: unknown): void {
 
   if (prohibitedPaths.length > 0) {
     throw new Error(
-      "Control-plane payload contains prohibited fields: " +
-        prohibitedPaths.join(", "),
+      "Control-plane payload contains prohibited fields: " + prohibitedPaths.join(", "),
     );
   }
 }
