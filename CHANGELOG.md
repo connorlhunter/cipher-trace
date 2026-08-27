@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0-alpha.2] - 2026-08-26
+
+### Changed
+
+- Replaced separate TypeScript formatting, linting, and type-check commands with Vite+.
+- Added Oxfmt, Oxlint, type-aware checks, and a 15-path complexity limit for application and contract source.
+
 ## [0.1.0-alpha.1] - 2026-08-26
 
 ### Added
