@@ -4,7 +4,7 @@ Cipher Trace is an end-to-end encrypted document provenance and approval platfor
 
 Project documentation, diagrams, and the published architecture:
 
-<https://connorhunter.me/projects/cipher-trace?viewer=docs#project-viewer>
+<https://connorhunter.me/projects/cipher-trace/docs>
 
 ## Scope
 
@@ -64,17 +64,21 @@ The Python and TypeScript libraries share a strict, structural trace-event envel
 
 ## Coverage
 
-Both TypeScript and Python require at least 95% line and function coverage. Generate the matching overview, TypeScript, and Python reports with:
+Both TypeScript and Python require at least 95% line and function coverage. Generate the structured report and PDF with:
 
 ```sh
 bun run coverage:build
 ```
 
-The publication command renders the same report pages and PDFs, then uploads them when the artifact bucket environment variables are available:
+The publication command creates `coverage/index.json` and `coverage/coverage.pdf`, then uploads them when the artifact bucket environment variables are available. The portfolio renders the JSON itself:
 
 ```sh
 bun run coverage:publish
 ```
+
+## Releases
+
+`bun run release:publish` validates the release version against `CHANGELOG.md`, then publishes the coverage JSON/PDF and changelog Markdown/PDF. The canonical changelog stays in the repository.
 
 ## Roadmap
 

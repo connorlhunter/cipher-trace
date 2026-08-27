@@ -1,15 +1,15 @@
 import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 
 import { expect, test } from "bun:test";
 
+import { coveragePaths } from "../coverage/coverage-paths";
 import {
   coverageInvalidations,
   coveragePublishDestinations,
   publishCoverage,
 } from "./publish-coverage";
-import { coveragePaths } from "../coverage/coverage-paths";
 
 const publicationEnvironment: NodeJS.ProcessEnv = {
   ARTIFACTS_BUCKET: "live-artifacts",
@@ -19,7 +19,7 @@ const publicationEnvironment: NodeJS.ProcessEnv = {
   SOURCE_ARTIFACTS_PREFIX: "source",
 };
 
-test("builds project-scoped coverage destinations", (): void => {
+test("builds project-scoped coverage destinations and invalidation", (): void => {
   expect(coveragePublishDestinations(publicationEnvironment, "/workspace/cipher-trace")).toEqual([
     {
       label: "Source coverage copy",
@@ -32,9 +32,6 @@ test("builds project-scoped coverage destinations", (): void => {
       target: "s3://live-artifacts/portfolio/projects/cipher-trace/coverage/",
     },
   ]);
-});
-
-test("builds a project-scoped coverage invalidation", (): void => {
   expect(coverageInvalidations(publicationEnvironment)).toEqual([
     {
       distributionId: "distribution-123",
@@ -43,48 +40,70 @@ test("builds a project-scoped coverage invalidation", (): void => {
   ]);
 });
 
-test("excludes and removes temporary coverage files during publication", async (): Promise<void> => {
+test("publishes only coverage JSON and PDF", async (): Promise<void> => {
   const workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-trace-coverage-publish-"));
   const paths = coveragePaths(workspaceRoot);
-  const requiredFiles = [
-    paths.overview.html,
-    paths.overview.pdf,
-    paths.typescript.html,
-    paths.typescript.pdf,
-    paths.python.html,
-    paths.python.pdf,
-  ];
-  for (const path of requiredFiles) {
-    mkdirSync(dirname(path), { recursive: true });
-    writeFileSync(path, "coverage");
-  }
+  mkdirSync(paths.directory, { recursive: true });
+  writeFileSync(paths.json, "{}");
+  writeFileSync(paths.pdf, "pdf");
+  writeFileSync(paths.typescriptLcov, "LCOV must not be uploaded");
+  const calls: Array<{ args: ReadonlyArray<string>; subject: string }> = [];
 
-  const commands: Array<readonly string[]> = [];
   await publishCoverage({
-    commandRunner: async (_command, args): Promise<void> => {
-      commands.push(args);
+    commandRunner: async (_command, args, subject): Promise<void> => {
+      calls.push({ args, subject });
     },
     env: publicationEnvironment,
     workspaceRoot,
   });
 
-  expect(commands).toContainEqual([
-    "s3",
-    "sync",
-    paths.directory,
-    "s3://source-artifacts/source/projects/cipher-trace/coverage/",
-    "--delete",
-    "--exclude",
-    ".*.tmp",
-  ]);
-  expect(commands).toContainEqual([
-    "s3",
-    "rm",
-    "s3://live-artifacts/portfolio/projects/cipher-trace/coverage/",
-    "--recursive",
-    "--exclude",
-    "*",
-    "--include",
-    ".*.tmp",
+  expect(calls).toEqual([
+    {
+      args: [
+        "s3",
+        "cp",
+        paths.json,
+        "s3://source-artifacts/source/projects/cipher-trace/coverage/index.json",
+      ],
+      subject: "Source coverage copy: index.json",
+    },
+    {
+      args: [
+        "s3",
+        "cp",
+        paths.pdf,
+        "s3://source-artifacts/source/projects/cipher-trace/coverage/coverage.pdf",
+      ],
+      subject: "Source coverage copy: coverage.pdf",
+    },
+    {
+      args: [
+        "s3",
+        "cp",
+        paths.json,
+        "s3://live-artifacts/portfolio/projects/cipher-trace/coverage/index.json",
+      ],
+      subject: "Live coverage artifact: index.json",
+    },
+    {
+      args: [
+        "s3",
+        "cp",
+        paths.pdf,
+        "s3://live-artifacts/portfolio/projects/cipher-trace/coverage/coverage.pdf",
+      ],
+      subject: "Live coverage artifact: coverage.pdf",
+    },
+    {
+      args: [
+        "cloudfront",
+        "create-invalidation",
+        "--distribution-id",
+        "distribution-123",
+        "--paths",
+        "/portfolio/projects/cipher-trace/coverage/*",
+      ],
+      subject: "Artifact CloudFront invalidation",
+    },
   ]);
 });

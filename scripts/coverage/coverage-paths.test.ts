@@ -4,22 +4,12 @@ import { expect, test } from "bun:test";
 
 import { coveragePaths } from "./coverage-paths";
 
-test("resolves overview, TypeScript, and Python coverage files", (): void => {
+test("resolves LCOV inputs and the published coverage pair", (): void => {
   expect(coveragePaths("/workspace/cipher-trace")).toEqual({
     directory: join("/workspace/cipher-trace", "coverage"),
+    json: join("/workspace/cipher-trace", "coverage", "index.json"),
+    pdf: join("/workspace/cipher-trace", "coverage", "coverage.pdf"),
     pythonLcov: join("/workspace/cipher-trace", "coverage", "python.lcov"),
     typescriptLcov: join("/workspace/cipher-trace", "coverage", "lcov.info"),
-    overview: {
-      html: join("/workspace/cipher-trace", "coverage", "index.html"),
-      pdf: join("/workspace/cipher-trace", "coverage", "index.pdf"),
-    },
-    python: {
-      html: join("/workspace/cipher-trace", "coverage", "python", "index.html"),
-      pdf: join("/workspace/cipher-trace", "coverage", "python", "index.pdf"),
-    },
-    typescript: {
-      html: join("/workspace/cipher-trace", "coverage", "typescript", "index.html"),
-      pdf: join("/workspace/cipher-trace", "coverage", "typescript", "index.pdf"),
-    },
   });
 });
