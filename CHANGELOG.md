@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0-alpha.4] - 2026-09-09
+
+### Changed
+
+- Run React Doctor during the shared local and CI verification command.
+- Update Vite+, TypeScript, React tooling, routing, and schema dependencies.
+- Align the Vite core alias with Vite+ and update the CI Python setup action.
+
+### Known limits
+
+- Encryption, signatures, uploads, approvals, and public checkpoints remain planned.
+
 ## [0.1.0-alpha.3] - 2026-08-27
 
 ### Added

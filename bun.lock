@@ -17,7 +17,7 @@
     },
     "apps/web": {
       "name": "@cipher-trace/web",
-      "version": "0.1.0-alpha.3",
+      "version": "0.1.0-alpha.4",
       "dependencies": {
         "@tanstack/react-router": "^1.170.32",
         "react": "^19.2.8",
@@ -32,7 +32,7 @@
     },
     "packages/typescript/trace-contracts": {
       "name": "@cipher-trace/trace-contracts",
-      "version": "0.1.0-alpha.3",
+      "version": "0.1.0-alpha.4",
       "dependencies": {
         "zod": "^4.5.4",
       },
